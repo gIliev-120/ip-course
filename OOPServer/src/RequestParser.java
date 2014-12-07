@@ -13,6 +13,7 @@ public class RequestParser {
 			headersMap.put(temp[0],temp[1]);
 			
 			
+			
 		}
 		Request req = new Request(firstLine[0], firstLine[1],firstLine[2],null,headersMap);
 		
