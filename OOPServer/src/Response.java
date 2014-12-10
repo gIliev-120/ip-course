@@ -13,8 +13,6 @@ public class Response {
 	private Request req;
 	String workingDir = System.getProperty("user.dir");
 
-	// Path fourOfour =
-	// Paths.get("C://Users//lilieva//Desktop//tues_ip//404.html");
 
 	public Response(PrintWriter out, Request req) {
 		// TODO Auto-generated constructor stub
@@ -23,32 +21,37 @@ public class Response {
 	}
 
 	public void pageNotFound() {
-		out.println(req.getVersion());
-		out.println("404 NOT FOUND");
-		out.println("Content-Type: text/html"+"\n");
+		out.print(req.getVersion() + " 404 NOT FOUND");
+		out.println("Content-Type: text/html");
 		out.println();
 		out.println("<html>"
 				+ "<head>"
-				+"<title>SORRY :C</title>"
+				+ "<title>SORRY :C</title>"
 				+ "</head>"
-				+"</html>");
-	
+				+ "<body>"
+				+ "<h1>SORRY PAGE NOT FOUND</h1>"
+				+ "</body>"
+				+ "</html>");
+
 	}
 
 	public void respond() {
 		Path filePath = Paths.get(workingDir + req.getResource());
 		System.out.println(filePath.toString());
 		if (req.getMethod().equals("GET")) {
-			
-				out.println(req.getVersion());
-				out.println("200 OK");
+
+			try {
+				Stream<String> lines = Files.lines(filePath);
+
+				out.println(req.getVersion() + " 200 OK");
 				out.println("Content-Type: text/html");
 				out.println();
-			try {	
-				Stream<String> lines = Files.lines(filePath);
+
 				lines.forEach(text -> out.println(text));
 				lines.close();
-			} catch (IOException ex) {pageNotFound();}
-		} 
+			} catch (IOException ex) {
+				pageNotFound();
+			}
+		}
 	}
 }
